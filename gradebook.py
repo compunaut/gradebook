@@ -33,3 +33,8 @@ def login():
             return redirect(url_for('class_selection.html'))
     return render_template('sign_in.html', error=error)
 
+# Route for returing a given class' roster
+@app.route('/class')
+def route():
+    return render_template('flaskroute.html')
+
