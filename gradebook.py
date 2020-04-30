@@ -4,7 +4,9 @@ from flask import redirect
 from flask import url_for
 from flask import request
 from flask_sqlalchemy import SQLAlchemy
-from flask import jsonify
+from flask_login import login_user, LoginManager, UserMixin, logout_user, login_required, current_user
+from werkzeug.security import check_password_hash
+from datetime import datetime
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -22,19 +24,49 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
+app.secret_key = "umbc2020"
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+class User(UserMixin, db.Model):
+
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(128))
+    password_hash = db.Column(db.String(128))
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+
+    def get_id(self):
+        return self.username
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.filter_by(username=user_id).first()
+
 # Route for handling the login page logic
-@app.route('/sign_in', methods=['GET', 'POST'])
+@app.route('/login/', methods=["GET", "POST"])
 def login():
-    error = None
-    if request.method == 'POST':
-        if request.form['username'] != 'professor1' or request.form['password'] != 'umbc123':
-            error = 'Invalid Credentials. Please try again.'
-        else:
-            return redirect(url_for('class_selection.html'))
-    return render_template('sign_in.html', error=error)
+    if request.method == "GET":
+        return render_template("login_page.html")
+
+
+@app.route("/logout/")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
 
 # Route for returing a given class' roster
-@app.route('/class')
-def route():
-    return render_template('flaskroute.html')
+@app.route('/class/')
+def roster():
+    return render_template("class_roster.html")
+
+@app.route('/hi')
+def hello_world():
+    return 'Hello from Flask!'
 
