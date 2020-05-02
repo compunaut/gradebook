@@ -49,6 +49,21 @@ class User(UserMixin, db.Model):
     def get_id(self):
         return self.username
 
+# Gradebook table
+class Gradebook(UserMixin, db.Model):
+
+    _tablename_ = "gradebook"
+
+    s_id = db.Column(db.Integer, primary_key=True)
+    fname = db.Column(db.String(128))
+    lname = db.Column(db.String(128))
+    major = db.Column(db.String(128))
+    email = db.Column(db.String(128))
+    a1 = db.Column(db.Integer)  #represents each assignment's grade
+    a2 = db.Column(db.Integer)
+    a3 = db.Column(db.Integer)
+    a4 = db.Column(db.Integer)
+
 '''
 # Student table
 class Student(UserMixin, db.Model):
@@ -146,7 +161,7 @@ def gradebook():
     return render_template("gradebook.html")
 
 # Student info page
-@app.route('/student/')
+@app.route('/student/') # may not need a 'student' page if gradebook is detailed
 def load_student(s_id):
     return render_template("student_info.html")
 
