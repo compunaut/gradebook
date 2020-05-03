@@ -13,6 +13,7 @@ app = Flask(__name__)
 app.config["DEBUG"] = True
 
 
+
 # Set up the database:
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
     username="ESIS668",
@@ -26,6 +27,8 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+mycursor = db.cursor()
 
 # Set up the login manager:
 app.secret_key = "umbc2020"
@@ -156,9 +159,12 @@ def course_roster():
     return render_template("course_roster.html")
 
 # Gradebook page
-@app.route('/gradebook/')
+@app.route('/gradebook/', methods=["GET", "POST"])
 def gradebook():
-    return render_template("gradebook.html")
+  if request.method == "GET":
+       mycursor.execute('SELECT * FROM Gradebook')
+       data = mycursor.fetchall()
+       return render_template('gradebook.html', data = data)
 
 # Student info page
 @app.route('/student/') # may not need a 'student' page if gradebook is detailed
