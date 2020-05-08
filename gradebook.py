@@ -5,14 +5,12 @@ from flask import url_for
 from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, LoginManager, UserMixin, logout_user, login_required, current_user
-from werkzeug.security import check_password_hash
-from datetime import datetime
-from flask_migrate import Migrate
+from werkzeug.security import check_password_hash, generate_password_hash
+#from datetime import datetime
+#from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
-
-
 
 # Set up the database:
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
@@ -26,9 +24,9 @@ app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+#migrate = Migrate(app, db)
 
-mycursor = db.cursor()
+#mycursor = db.cursor()
 
 # Set up the login manager:
 app.secret_key = "umbc2020"
@@ -36,21 +34,29 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-# DATABASE TABLES:
+class User(UserMixin):
 
-# User table
-class User(UserMixin, db.Model):
-
-    __tablename__ = "users"
-
-    u_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(128))
-    password_hash = db.Column(db.String(128))
+    def __init__(self, username, password_hash):
+        self.username = username
+        self.password_hash = password_hash
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
     def get_id(self):
         return self.username
+
+
+# Object to hold all users
+all_users = {
+    "admin": User("admin", generate_password_hash("secret")),
+    "bob": User("bob", generate_password_hash("less-secret")),
+    "caroline": User("caroline", generate_password_hash("completely-secret")),
+}
+
+@login_manager.user_loader
+def load_user(user_id):
+    return all_users.get(user_id)
 
 # Gradebook table
 class Gradebook(UserMixin, db.Model):
@@ -67,84 +73,24 @@ class Gradebook(UserMixin, db.Model):
     a3 = db.Column(db.Integer)
     a4 = db.Column(db.Integer)
 
-'''
-# Student table
-class Student(UserMixin, db.Model):
-
-    _tablename_ = "students"
-
-    s_id = db.Column(db.Integer, primary_key=True)
-    fname = db.Column(db.String(128))
-    lname = db.Column(db.String(128))
-    major = db.Column(db.String(128))
-    email = db.Column(db.String(128))
-
-    def add_student():
-        return #????? - make a new record
-    def remove_student(self):
-        return #????? - delete a record
-
-# Course table
-class Course(UserMixin, db.Model):
-
-    _tablename_ = "course"
-
-    c_id = db.Column(db.Integer, primary_key=True)
-    c_title = db.Column(db.String(128))
-
-    def add_course():
-        return #????? - make a new record
-    def remove_course(self):
-        return #????? - delete a record
-
-#Assignment table
-class Assignment(UserMixin, db.Model):
-
-    _tablename_ = "assignment"
-
-    a_id = db.Column(db.Integer, primary_key=True)
-    c_id = db.Column(db.Integer, foreign_key=True)
-    #c_id = db.ForeignKey('course.c_id', on_delete=db.CASCADE)
-
-    def add_assignment():
-        return #????? - make a new record
-    def remove_assignment(self):
-        return #????? - delete a record
-
-"""
-#Gradebook Table
-class Gradebook(UserMixin, db.Model):
-
-    _tablename_ = "gradebook"
-
-    c_id = db.Column(db.Integer, foreign_key=True)
-    s_id = db.Column(db.Integer, foreign_key=True)
-    a_id = db.Column(db.Integer, foreign_key=True)
-    grade = db.Column(db.Integer)
-
-    def add_grade():
-        return #????? - make a new record
-    def remove_grade(self):
-        return #????? - delete a record
-    def change_grade(self):
-        return #????? - edit a record
-"""
-'''
-
-# Handle login function, calling user information from id
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter_by(username=user_id).first()
-
-
 
 # ROUTES
 
-# Login Page - login is our homepage
-@app.route('/', methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-        return render_template("login_page.html")
+        return render_template("login_page.html", error=False)
+
+    username = request.form["username"]
+    if username not in all_users:
+        return render_template("login_page.html", error=True)
+    user = all_users[username]
+
+    if not user.check_password_hash(request.form["password"]):
+        return render_template("login_page.html", error=True)
+
+    login_user(user)
+    return redirect(url_for('gradebook.html'))
 
 # Logout re-routing
 @app.route("/logout/")
@@ -153,21 +99,18 @@ def logout():
     logout_user()
     return redirect(url_for('/'))
 
-# Course selection page
-@app.route('/course/')
-def course_roster():
-    return render_template("course_roster.html")
-
 # Gradebook page
 @app.route('/gradebook/', methods=["GET", "POST"])
+@login_required
 def gradebook():
   if request.method == "GET":
-       mycursor.execute('SELECT * FROM Gradebook')
-       data = mycursor.fetchall()
-       return render_template('gradebook.html', data = data)
+       #mycursor.execute('SELECT * FROM Gradebook')
+       #data = mycursor.fetchall()
+       return render_template('gradebook.html')#, data = data)
 
 # Student info page
-@app.route('/student/') # may not need a 'student' page if gradebook is detailed
+@app.route('/student/<s_id>', methods=["GET", "POST"])
+@login_required
 def load_student(s_id):
     return render_template("student_info.html")
 

@@ -17,48 +17,35 @@
     </head>
 
     <body>
+        <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Login</a>
+            </li>
+          </ul>
+        </nav>
 
-<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-  <ul class="navbar-nav">
-    <li class="nav-item active">
-      <a class="nav-link" href="#">Login</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Gradebook</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Logout</a>
-    </li>
-  </ul>
-</nav>
+        <!-- Page title -->
+        <div class="text-center" style="margin-bottom:0">
+          <h1>Welcome to "THE" gradebook</h1>
+          <p>Please enter your login credentials below</p>
+        </div>
 
-</nav>
-
-<!-- Page title -->
-    <div class="text-center" style="margin-bottom:0">
-      <h1>Welcome to "THE" gradebook</h1>
-      <p>Please enter your login credentials below</p>
-    </div>
-
-<br>
-  <!-- Login Form-->
-
+        <br>
+        <!-- Login Form-->
         <div class="container" style="width:40%">
-                <form id="corners"  action="gradebook.py" method="POST">
-                  <div class="form-group">
+            <form id="corners"  action="gradebook.py" method="POST">
+                <div class="form-group">
                     <label for="username">Username:</label>
                     <input class="form-control" id="username" name="username" placeholder="Enter your username">
-                  </div>
-                  <div class="form-group">
+                </div>
+                <div class="form-group">
                     <label for="password">Password:</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
-                  </div>
-                  <button type="submit" class="btn btn-primary">Log in</button>
-                </form>
-              </div>
-
-
-
+                </div>
+                    <button type="submit" class="btn btn-primary">Log in</button>
+            </form>
+        </div>
 
     </body>
 </html>

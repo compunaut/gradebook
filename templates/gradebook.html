@@ -15,43 +15,37 @@
     </head>
 
     <body>
+        <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+          <ul class="navbar-nav">
+            <!-- Should list username instead of 'login' option
+            <li class="nav-item">
+              <a class="nav-link" href="#">Login</a>
+            </li>
+            -->
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Gradebook</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Logout</a>
+            </li>
+          </ul>
+        </nav>
 
-<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-  <ul class="navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link" href="#">Login</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" href="#">Gradebook</a>
-    </li>
-    <li class="nav-item active">
-      <a class="nav-link" href="#">Logout</a>
-    </li>
-  </ul>
-</nav>
+        <!-- Page title -->
+        <div class="text-center" style="margin-bottom:0">
+            <h1>"THE" gradebook</h1>
+            <h3>Class: Information Systems 101</h3>
+        </div>
 
-
-
-<!-- Page title -->
-    <div class="text-center" style="margin-bottom:0">
-      <h1>"THE" gradebook</h1>
-      <h3>Class: Information Systems 101</h3>
-
-    </div>
-
-<br>
-  <!-- Table for data display->
-
-              <table>
-                  <tbody>
-                  {# here we iterate over every item in our list which we will pass from bar() #}
-                  {% for item in data %}
+        <br>
+        <!-- Table for data display-->
+            <table>
+                <tbody>
+                    {# here we iterate over every item in our list which we will pass from bar() #}
+                    {% for item in data %}
                       <tr><td>{{ item }}</td></tr>
-                  {% endfor %}
-                  </tbody>
-              </table>
-
-
-
+                    {% endfor %}
+                </tbody>
+            </table>
     </body>
 </html>
