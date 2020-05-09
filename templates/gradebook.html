@@ -26,7 +26,7 @@
               <a class="nav-link active" href="#">Gradebook</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="#">Logout</a>
+              <a class="nav-link" href="http://esis668.pythonanywhere.com/">Logout</a>
             </li>
           </ul>
         </nav>
@@ -41,7 +41,6 @@
         <!-- Table for data display-->
             <table>
                 <tbody>
-                    {# here we iterate over every item in our list which we will pass from bar() #}
                     {% for item in data %}
                       <tr><td>{{ item }}</td></tr>
                     {% endfor %}
