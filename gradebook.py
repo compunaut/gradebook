@@ -110,7 +110,6 @@ def login():
 @login_required
 def logout():
     logout_user()
-    # Redirect back to homepage/login page
     return redirect(url_for("/"))
 
 # Gradebook page
@@ -127,10 +126,16 @@ def gradebook():
      #return render_template("main_page.html", comments=Comment.query.all())
      return render_template("gradebook.html", gradebk=Gradebook.query.all())
 
-'''
-# Student info page
-@app.route('/student/<s_id>', methods=["GET", "POST"])
+@app.route("/addstudent", methods=["GET", "POST"])
 @login_required
-def load_student(s_id):
-    return render_template("student_info.html", student=Gradebook.query(s_id))
-'''
+def addstudent():
+    if request.method == "GET":
+        return render_template("add_student.html")
+    return render_template("add_student.html", error=True)
+
+@app.route("/removestudent", methods=["GET", "POST"])
+@login_required
+def removestudent():
+    if request.method == "GET":
+        return render_template("remove_student.html")
+    return render_template("remove_student.html", error=True)
