@@ -38,9 +38,9 @@ db = SQLAlchemy(app)
 
 
 # Set up the login manager:
-#app.secret_key = "umbc2020"
-#login_manager = LoginManager()
-#login_manager.init_app(app)
+app.secret_key = "umbc2020"
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 class User(UserMixin):
@@ -63,9 +63,9 @@ all_users = {
     "caroline": User("caroline", generate_password_hash("completely-secret")),
 }
 
-#@login_manager.user_loader
-#def load_user(user_id):
-    #return all_users.get(user_id)
+@login_manager.user_loader
+def load_user(user_id):
+    return all_users.get(user_id)
 
 # Gradebook table
 class Gradebook(db.Model):
@@ -90,21 +90,25 @@ def login():
     if request.method == "GET":
         return render_template("login_page.html")
 
-    if request.form["username"] != "admin" or request.form["password"] != "secret":
-        return render_template("login_page.html")
+    form = request.form
+    attempt = load_user(form["username"])
+    if attempt:     # attempt will be NULL and fail if not a valid user
+        if User.check_password(attempt, form["password"]):
+            login_user(attempt)
+            return redirect(url_for("gradebook"))
 
-    return redirect(url_for('gradebook'))
+    return render_template("login_page.html", error=True)
 
 # Logout re-routing
-@app.route("/logout/")
-#@login_required
+@app.route("/logout")
+@login_required
 def logout():
     logout_user()
-    return redirect(url_for('/'))
+    return redirect(url_for("/"))
 
 # Gradebook page
-@app.route('/gradebook/', methods=["GET", "POST"])
-#@login_required
+@app.route("/gradebook", methods=["GET", "POST"])
+@login_required
 def gradebook():
   if request.method == "GET":
      #cur = mysql.connection.cursor()
@@ -118,7 +122,7 @@ def gradebook():
 
 # Student info page
 @app.route('/student/<s_id>', methods=["GET", "POST"])
-#@login_required
+@login_required
 def load_student(s_id):
     return render_template("student_info.html")
 

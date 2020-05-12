@@ -17,16 +17,14 @@
     <body>
         <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
           <ul class="navbar-nav">
-            <!-- Should list username instead of 'login' option
-            <li class="nav-item">
-              <a class="nav-link" href="#">Login</a>
-            </li>
-            -->
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Gradebook</a>
+            <!-- <li class="nav-item">
+              <a>Hello, {{ current_user.name }}!</a>
+            </li> -->
+            <li class="nav-item active">
+              <a class="nav-link" href="http://esis668.pythonanywhere.com/gradebook/">Gradebook</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="http://esis668.pythonanywhere.com/">Logout</a>
+              <a class="nav-link" href="http://esis668.pythonanywhere.com/logout/">Logout</a>
             </li>
           </ul>
         </nav>
@@ -56,7 +54,7 @@
                 <tbody>
                     {% for item in student %}
                       <tr>
-                          <td>{{ item.s_id }}</td>
+                          <td class="nav-link active" href="http://esis668.pythonanywhere.com/student/<s_id>">{{ item.s_id }}</td>
                           <td>{{ item.fname }}</td>
                           <td>{{ item.lname }}</td>
                           <td>{{ item.major }}</td>
