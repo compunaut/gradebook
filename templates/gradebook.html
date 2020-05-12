@@ -39,10 +39,33 @@
 
         <br>
         <!-- Table for data display-->
-            <table>
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col">Student ID</th>
+                      <th scope="col">First Name</th>
+                      <th scope="col">Last Name</th>
+                      <th scope="col">Student Major</th>
+                      <th scope="col">Student Email</th>
+                      <th scope="col">Assignment 1</th>
+                      <th scope="col">Assignment 2</th>
+                      <th scope="col">Assignment 3</th>
+                      <th scope="col">Assignment 4</th>
+                    </tr>
+                </thead>
                 <tbody>
                     {% for item in student %}
-                      <tr><td>{{ item.s_id }}</td></tr>
+                      <tr>
+                          <td>{{ item.s_id }}</td>
+                          <td>{{ item.fname }}</td>
+                          <td>{{ item.lname }}</td>
+                          <td>{{ item.major }}</td>
+                          <td>{{ item.email }}</td>
+                          <td>{{ item.a1 }}</td>
+                          <td>{{ item.a2 }}</td>
+                          <td>{{ item.a3 }}</td>
+                          <td>{{ item.a4 }}</td>
+                      </tr>
                     {% endfor %}
                 </tbody>
             </table>
