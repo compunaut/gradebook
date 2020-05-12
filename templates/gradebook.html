@@ -12,9 +12,17 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <title>Gradebook</title>
         <link href="gradebook.css" rel="stylesheet">
+    <!-- Stylizations -->
+        <style>
+            .text-primary:hover {
+                background-color: light-grey;
+                opacity: 0.5;
+            }
+        </style>
     </head>
 
     <body>
+        <!-- Navigation Bar -->
         <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
           <ul class="navbar-nav">
             <!-- <li class="nav-item">
@@ -37,13 +45,13 @@
 
         <br>
         <!-- Table for data display-->
-            <table class="table">
+            <table class="table" id="student_table">
                 <thead>
                     <tr>
-                      <th scope="col">Student ID</th>
-                      <th scope="col">First Name</th>
-                      <th scope="col">Last Name</th>
-                      <th scope="col">Student Major</th>
+                      <th scope="col" class="text-primary" id="s_id" onclick="sortTable(0)">Student ID</th>
+                      <th scope="col" class="text-primary" id="fname" onclick="sortTable(1)">First Name</th>
+                      <th scope="col" class="text-primary" id="lname" onclick="sortTable(2)">Last Name</th>
+                      <th scope="col" class="text-primary" id="major" onclick="sortTable(3)">Student Major</th>
                       <th scope="col">Student Email</th>
                       <th scope="col">Assignment 1</th>
                       <th scope="col">Assignment 2</th>
@@ -52,20 +60,76 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in student %}
+                    {% for student in gradebk %}
                       <tr>
-                          <td class="nav-link active" href="http://esis668.pythonanywhere.com/student/<s_id>">{{ item.s_id }}</td>
-                          <td>{{ item.fname }}</td>
-                          <td>{{ item.lname }}</td>
-                          <td>{{ item.major }}</td>
-                          <td>{{ item.email }}</td>
-                          <td>{{ item.a1 }}</td>
-                          <td>{{ item.a2 }}</td>
-                          <td>{{ item.a3 }}</td>
-                          <td>{{ item.a4 }}</td>
+                          <td>{{ student.s_id }}</td>
+                          <td>{{ student.fname }}</td>
+                          <td>{{ student.lname }}</td>
+                          <td>{{ student.major }}</td>
+                          <td>{{ student.email }}</td>
+                          <td>{{ student.a1 }}</td>
+                          <td>{{ student.a2 }}</td>
+                          <td>{{ student.a3 }}</td>
+                          <td>{{ student.a4 }}</td>
                       </tr>
                     {% endfor %}
                 </tbody>
             </table>
+    <script>
+        function sortTable(n) {
+          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+          table = document.getElementById("student_table");
+          switching = true;
+          // Set the sorting direction to ascending:
+          dir = "asc";
+          /* Make a loop that will continue until
+          no switching has been done: */
+          while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+              // Start by saying there should be no switching:
+              shouldSwitch = false;
+              /* Get the two elements you want to compare,
+              one from current row and one from the next: */
+              x = rows[i].getElementsByTagName("TD")[n];
+              y = rows[i + 1].getElementsByTagName("TD")[n];
+              /* Check if the two rows should switch place,
+              based on the direction, asc or desc: */
+              if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch = true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch = true;
+                  break;
+                }
+              }
+            }
+            if (shouldSwitch) {
+              /* If a switch has been marked, make the switch
+              and mark that a switch has been done: */
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              // Each time a switch is done, increase this count by 1:
+              switchcount ++;
+            } else {
+              /* If no switching has been done AND the direction is "asc",
+              set the direction to "desc" and run the while loop again. */
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+              }
+            }
+          }
+        }
+    </script>
     </body>
 </html>

@@ -85,18 +85,24 @@ class Gradebook(db.Model):
 
 # ROUTES
 
-@app.route("/", methods=["GET", "POST"])
+# Login page loading, functionality and error rendering
+@app.route("/", methods=["GET", "POST"]) # Login is our homepage
 def login():
+    # Load the initial page
     if request.method == "GET":
         return render_template("login_page.html")
 
+    # Variables for holding the login form and the User class
     form = request.form
     attempt = load_user(form["username"])
+
+    # Validate user for login and redirect
     if attempt:     # attempt will be NULL and fail if not a valid user
         if User.check_password(attempt, form["password"]):
             login_user(attempt)
             return redirect(url_for("gradebook"))
 
+    # If invalid user, reload with error message
     return render_template("login_page.html", error=True)
 
 # Logout re-routing
@@ -104,6 +110,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    # Redirect back to homepage/login page
     return redirect(url_for("/"))
 
 # Gradebook page
@@ -118,11 +125,12 @@ def gradebook():
      #cur.close()
      #return render_template("gradebook.html", data = data)
      #return render_template("main_page.html", comments=Comment.query.all())
-     return render_template("gradebook.html", student=Gradebook.query.all())
+     return render_template("gradebook.html", gradebk=Gradebook.query.all())
 
+'''
 # Student info page
 @app.route('/student/<s_id>', methods=["GET", "POST"])
 @login_required
 def load_student(s_id):
-    return render_template("student_info.html")
-
+    return render_template("student_info.html", student=Gradebook.query(s_id))
+'''
