@@ -26,14 +26,6 @@ app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
-#migrate = Migrate(app, db)
-
-#app.config['MYSQL_HOST'] = 'ESIS668.mysql.pythonanywhere-services.com'
-#app.config['MYSQL_USER'] = 'ESIS668'
-#app.config['MYSQL_PASSWORD'] = 'python123'
-#app.config['MYSQL_DB'] = 'ESIS668$668gradebook"'
-
-#mysql = MySQL(app)
 
 
 
@@ -117,13 +109,6 @@ def logout():
 @login_required
 def gradebook():
   if request.method == "GET":
-     #cur = mysql.connection.cursor()
-     #cur.execute("SELECT * FROM gradebook")
-     #data = cur.fetchall()
-     #mysql.connection.commit()
-     #cur.close()
-     #return render_template("gradebook.html", data = data)
-     #return render_template("main_page.html", comments=Comment.query.all())
      return render_template("gradebook.html", gradebk=Gradebook.query.all())
 
 @app.route("/addstudent", methods=["GET", "POST"])
@@ -132,6 +117,21 @@ def addstudent():
     if request.method == "GET":
         return render_template("add_student.html")
     return render_template("add_student.html", error=True)
+
+    first = Gradebook(fname=request.form["first_name"])
+    last = Gradebook(lname=request.form["last_name"])
+    sid = Gradebook(s_id=request.form["student_id"])
+    smajor= Gradebook(major=request.form["major_add"])
+    em = Gradebook(email=request.form["email_address"])
+
+    db.session.add(first)
+    db.session.add(last)
+    db.session.add(sid)
+    db.session.add(smajor)
+    db.session.add(em)
+    db.session.commit()
+    return redirect(url_for('gradebook'))
+
 
 @app.route("/removestudent", methods=["GET", "POST"])
 @login_required

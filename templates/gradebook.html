@@ -29,7 +29,7 @@
               <a class="nav-link" href="http://esis668.pythonanywhere.com/gradebook/">Gradebook</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="http://esis668.pythonanywhere.com/logout/">Logout</a>
+              <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
             </li>
           </ul>
         </nav>
@@ -76,8 +76,8 @@
         <br>
         <!-- Manage student roster -->
             <div>
-                <a class="btn btn-secondary btn-lg" href="http://esis668.pythonanywhere.com/addstudent" role="button">Add Student</a>
-                <a class="btn btn-secondary btn-lg" href="http://esis668.pythonanywhere.com/removestudent" role="button">Remove Student</a>
+                <a class="btn btn-secondary btn-lg" href="{{ url_for('addstudent') }}" role="button">Add Student</a>
+                <a class="btn btn-secondary btn-lg" href="{{ url_for('removestudent') }}" role="button">Remove Student</a>
             </div>
 
     <script>
