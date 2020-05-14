@@ -106,32 +106,39 @@ def logout():
 
 # Gradebook page
 @app.route("/gradebook", methods=["GET", "POST"])
-@login_required
+#@login_required
 def gradebook():
   if request.method == "GET":
      return render_template("gradebook.html", gradebk=Gradebook.query.all())
 
 @app.route("/addstudent", methods=["GET", "POST"])
-@login_required
+#@login_required
 def addstudent():
     if request.method == "GET":
         return render_template("add_student.html")
     return render_template("add_student.html", error=True)
 
-    first = Gradebook(fname=request.form["first_name"])
-    last = Gradebook(lname=request.form["last_name"])
-    sid = Gradebook(s_id=request.form["student_id"])
-    smajor= Gradebook(major=request.form["major_add"])
-    em = Gradebook(email=request.form["email_address"])
+    #studentdata = Gradebook(fname=request.form["first_name"], lname=request.form["last_name"], s_id=request.form["student_id"], major=request.form["major_add"], email=request.form["email_address"])
+    #last = Gradebook(lname=request.form["last_name"])
+    #sid = Gradebook(s_id=request.form["student_id"])
+    #smajor= Gradebook(major=request.form["major_add"])
+    #em = Gradebook(email=request.form["email_address"])
 
-    db.session.add(first)
-    db.session.add(last)
-    db.session.add(sid)
-    db.session.add(smajor)
-    db.session.add(em)
+    #db.session.add(studentdata)
+    #db.session.add(last)
+    #db.session.add(sid)
+    #db.session.add(smajor)
+    #db.session.add(em)
+    #db.session.commit()
+    #return redirect(url_for('addstudent'))
+
+@app.route("/addstudentdata", methods=["POST"])
+#@login_required
+def addstudentdata():
+    studentdata = Gradebook(fname=request.form["first_name"], lname=request.form["last_name"], s_id=request.form["student_id"], major=request.form["major_add"], email=request.form["email_address"])
+    db.session.add(studentdata)
     db.session.commit()
-    return redirect(url_for('gradebook'))
-
+    return redirect(url_for('addstudent'))
 
 @app.route("/removestudent", methods=["GET", "POST"])
 @login_required
