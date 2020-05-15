@@ -77,7 +77,7 @@ class Gradebook(db.Model):
 
 # ROUTES
 
-# Login page loading, functionality and error rendering
+# Login
 @app.route("/", methods=["GET", "POST"]) # Login is our homepage
 def login():
     # Load the initial page
@@ -97,38 +97,42 @@ def login():
     # If invalid user, reload with error message
     return render_template("login_page.html", error=True)
 
-# Logout re-routing
-@app.route("/logout")
+# Logout
+@app.route("/logout", methods=["GET"])
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("/"))
 
-# Gradebook page
-@app.route("/gradebook", methods=["GET", "POST"])
-#@login_required
+# Gradebook
+@app.route("/gradebook", methods=["GET"])
+@login_required
 def gradebook():
-  if request.method == "GET":
-     return render_template("gradebook.html", gradebk=Gradebook.query.all())
+    return render_template("gradebook.html", gradebk=Gradebook.query.all())
 
+# Add student
 @app.route("/addstudent", methods=["GET", "POST"])
-#@login_required
+@login_required
 def addstudent():
     if request.method == "GET":
         return render_template("add_student.html")
-    return render_template("add_student.html", error=True)
 
-@app.route("/addstudentdata", methods=["POST"])
-#@login_required
-def addstudentdata():
     studentdata = Gradebook(fname=request.form["first_name"], lname=request.form["last_name"], s_id=request.form["student_id"], major=request.form["major_add"], email=request.form["email_address"])
     db.session.add(studentdata)
     db.session.commit()
-    return redirect(url_for('addstudent'))
 
+    return redirect(url_for('gradebook'))
+
+# Remove student
 @app.route("/removestudent", methods=["GET", "POST"])
 @login_required
 def removestudent():
     if request.method == "GET":
-        return render_template("remove_student.html")
-    return render_template("remove_student.html", error=True)
+        return render_template("remove_student.html", gradebk=Gradebook.query.all())
+
+    student_id = request.form["selected_student"]
+    studentdata = Gradebook.query.get(student_id)
+    db.session.delete(studentdata)
+    db.session.commit()
+
+    return redirect(url_for('gradebook'))
