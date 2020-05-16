@@ -118,6 +118,7 @@ def addstudent():
         return render_template("add_student.html")
 
     studentdata = Gradebook(fname=request.form["first_name"], lname=request.form["last_name"], s_id=request.form["student_id"], major=request.form["major_add"], email=request.form["email_address"])
+
     db.session.add(studentdata)
     db.session.commit()
 
@@ -132,7 +133,25 @@ def removestudent():
 
     student_id = request.form["selected_student"]
     studentdata = Gradebook.query.get(student_id)
+
     db.session.delete(studentdata)
+    db.session.commit()
+
+    return redirect(url_for('gradebook'))
+
+# Change a Grade
+@app.route("/changegrade", methods=["GET", "POST"])
+@login_required
+def changegrade():
+    if request.method == "GET":
+        return render_template("change_grade.html", gradebk=Gradebook.query.all())
+
+    student_id = request.form["s_id"]
+    studentdata = Gradebook.query.get(student_id)
+    assignment = request.form["a_col"]
+    new_grade = request.form["new_grade"]
+
+    studentdata.update().values(assignment = new_grade)
     db.session.commit()
 
     return redirect(url_for('gradebook'))
