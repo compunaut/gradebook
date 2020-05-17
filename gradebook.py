@@ -93,12 +93,11 @@ def login():
         if User.check_password(attempt, form["password"]):
             login_user(attempt)
             return redirect(url_for("gradebook"))
-
     # If invalid user, reload with error message
     return render_template("login_page.html", error=True)
 
 # Logout
-@app.route("/logout", methods=["GET"])
+@app.route("/logout/")
 @login_required
 def logout():
     logout_user()
@@ -144,14 +143,12 @@ def removestudent():
 @login_required
 def changegrade():
     if request.method == "GET":
-        return render_template("change_grade.html", gradebk=Gradebook.query.all())
+        return render_template("change_grade2.html", gradebk=Gradebook.query.all())
 
-    student_id = request.form["s_id"]
-    studentdata = Gradebook.query.get(student_id)
-    assignment = request.form["a_col"]
+    updatedassign = request.form["assign"]
+    student_id = request.form["student_id"]
     new_grade = request.form["new_grade"]
-
-    studentdata.update().values(assignment = new_grade)
+    db.session.query(Gradebook).filter_by(s_id=student_id).update({ updatedassign:new_grade })
     db.session.commit()
 
     return redirect(url_for('gradebook'))

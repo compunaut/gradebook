@@ -33,33 +33,52 @@
         </div>
 
         <br>
-        <!-- Remove Student-->
-        <div class="container" style="width:40%">
-            <form id="corners"  action="/removestudent" method="POST">
-                <div class="form-group">
-                    <label for="s_id">Please select the student:</label>
-                    <select class="form-control" id="s_id" name="s_id" placeholder="Select via student ID">
-                        {% for student in gradebk %}
-                        <option>{{ student.s_id }}</option>
-                        {% endfor %}
-                    </select>
+        <!-- Change Grade-->
+        <div class="container">
+            <form id="corners"  action="/changegrade" method="POST" style="width:40%">
+                 <div class="form-group">
+                    <label for="student_id">Student ID:</label>
+                    <input class="form-control" id="student_id" name="student_id" placeholder="Enter student ID here">
                 </div>
-                <!--
-                <div class="form-group">
-                    <label for="a_col">Please select the assignment:</label>
-                    <select class="form-control" id="a_col" name="a_col" placeholder="Select an assignment">
-                        {% foreach $column as $col %}
-                        <option>{{ gradebk.[i] }}</option>
-                        {% endforeach %}
-                    </select>
+                 <div class="form-group">
+                    <label for="assign">Assignment (Ex: a1):</label>
+                    <input class="form-control" id="assign" name="assign" placeholder="Enter assignment number here">
                 </div>
-                -->
                 <div class="form-group">
                     <label for="new_grade">Enter the new grade out of 100:</label>
                     <input class="form-control" id="new_grade" name="new_grade" placeholder="0">
                 </div>
 
                 <br>
+                <div>
+                <table class="table" id="student_table">
+                <thead>
+                    <tr>
+                      <th scope="col" class="text-primary" onclick="sortTable(0)">Student ID</th>
+                      <th scope="col" class="text-primary" onclick="sortTable(1)">First Name</th>
+                      <th scope="col" class="text-primary" onclick="sortTable(2)">Last Name</th>
+                      <th scope="col">a1</th>
+                      <th scope="col">a2</th>
+                      <th scope="col">a3</th>
+                      <th scope="col">a4</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in gradebk %}
+                      <tr>
+                          <td>{{ student.s_id }}</td>
+                          <td>{{ student.fname }}</td>
+                          <td>{{ student.lname }}</td>
+                          <td>{{ student.a1 }}</td>
+                          <td>{{ student.a2 }}</td>
+                          <td>{{ student.a3 }}</td>
+                          <td>{{ student.a4 }}</td>
+                      </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+
                 <button type="submit" class="btn btn-primary">Submit</button>
 
                 <div>

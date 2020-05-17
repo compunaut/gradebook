@@ -34,6 +34,11 @@
         <br>
         <!-- Login Form-->
         <div class="container" style="width:40%">
+            {% if error %}
+            <div class="alert alert-warning" role="alert">
+                        Incorrect username or password
+            </div>
+            {% endif %}
             <form id="corners"  action="." method="POST">
                 <div class="form-group">
                     <label for="username">Username:</label>
