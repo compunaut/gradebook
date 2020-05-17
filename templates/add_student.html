@@ -15,13 +15,14 @@
     </head>
 
     <body>
+        <!-- Navigation Bar -->
         <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link" href="http://esis668.pythonanywhere.com/gradebook">Gradebook</a>
+              <a class="nav-link" href="{{ url_for('gradebook') }}">Gradebook</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="http://esis668.pythonanywhere.com/logout">Logout</a>
+            <a class="nav-link" href="{{ url_for('login') }}">Logout</a>
             </li>
           </ul>
         </nav>
