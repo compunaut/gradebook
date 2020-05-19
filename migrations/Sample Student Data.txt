@@ -1,0 +1,21 @@
+-- 10 sample students
+
+insert into gradebook(s_id, fname, lname, major, email, a1, a2, a3, a4) values (1001, 'Sarah', 'Long', 'Biology', 'slong@school.edu', 100, 94, 88, 99);
+
+insert into gradebook(s_id, fname, lname, major, email, a1, a2, a3, a4) values (1002, 'Helen', 'Disher', 'Biology', 'hdisher@school.edu', 65, 82, 78, 80);
+
+insert into gradebook(s_id, fname, lname, major, email, a1, a2, a3, a4) values (1003, 'John', 'Smith', 'Computer Science', 'jsmith@school.edu', 99, 94, 90, 89);
+
+insert into gradebook(s_id, fname, lname, major, email, a1, a2, a3, a4) values (1004, 'Roger', 'Zelaz', 'Computer Science', 'rzelaz@school.edu', 75, 70, 87, 84);
+
+insert into gradebook(s_id, fname, lname, major, email, a1, a2, a3, a4) values (1005, 'Shinn', 'Sharon', 'Anthropology', 'ssharon@school.edu', 86, 94, 89, 97);
+
+insert into gradebook(s_id, fname, lname, major, email, a1, a2, a3, a4) values (1006, 'Archer', 'Min', 'Statistics', 'amin@school.edu', 100, 95, 88, 100);
+
+insert into gradebook(s_id, fname, lname, major, email, a1, a2, a3, a4) values (1007, 'Jordan', 'Jacobs', 'Statistics', 'jjacobs@school.edu', 84, 93, 45, 0);
+
+insert into gradebook(s_id, fname, lname, major, email, a1, a2, a3, a4) values (1008, 'Timothy', 'Goldsmith', 'English', 'tgoldsmith@school.edu', 89, 94, 88, 98);
+
+insert into gradebook(s_id, fname, lname, major, email, a1, a2, a3, a4) values (1009, 'William', 'Collins', 'English', 'wcollins@school.edu', 0, 75, 89, 90);
+
+insert into gradebook(s_id, fname, lname, major, email, a1, a2, a3, a4) values (1010, 'George', 'Billiard', 'Psychology', 'gbilliards@school.edu', 86, 90, 76, 90);

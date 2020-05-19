@@ -1,0 +1,32 @@
+-- SQL commands for Requirements
+
+
+-- Add a student
+insert into gradebook(s_id, fname, lname, major, email, a1, a2, 	a3, a4) 
+	values (, '', '', '', '', , , , );
+
+-- Delete a student (by id)
+DELETE FROM gradebook WHERE s_id = [s_id];
+
+-- Change a grade
+UPDATE gradebook SET [assignment column] = '[updated-grade]' WHERE s_id = [s_id];
+
+-- Display all students and their grades
+select * from gradebook;
+or
+select s_id, a1, a2, a3, a4 from gradebook;
+
+-- Add an assignment
+ALTER TABLE gradebook ADD COLUMN [assignment name] Integer;
+
+-- Delete an assignment
+ALTER TABLE gradebook DROP COLUMN [assignment name];
+
+-- Get a student's aggregate grade
+
+
+-- Display all students and grades in alphabetical order
+SELECT * FROM gradebook ORDER BY lname ASC;
+
+-- Display all of a single student's info (by id)
+select * from gradebook where s_id = [s_id]
