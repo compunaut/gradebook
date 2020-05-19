@@ -53,6 +53,7 @@ all_users = {
     "admin": User("admin", generate_password_hash("secret")),
     "bob": User("bob", generate_password_hash("less-secret")),
     "caroline": User("caroline", generate_password_hash("completely-secret")),
+    "testUser": User("testUser", generate_password_hash("is668")),
 }
 
 @login_manager.user_loader
