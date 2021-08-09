@@ -1,5 +1,5 @@
 
-name: Python package
+name: Python package update
 
 on: [push, pull_request]
 
